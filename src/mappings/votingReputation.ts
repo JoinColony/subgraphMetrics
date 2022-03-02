@@ -77,6 +77,8 @@ export function getVotingReputationExtension(event: any) : VotingReputationExten
 
     votingReputationExtension.installs = ZERO_BI;
     votingReputationExtension.initialised = ZERO_BI;
+    votingReputationExtension.depreciated = ZERO_BI;
+    votingReputationExtension.uninstalled = ZERO_BI;
     votingReputationExtension.motions = ZERO_BI;
     votingReputationExtension.motionsStaked = ZERO_BI;
     votingReputationExtension.motionsEscalated = ZERO_BI;
@@ -98,6 +100,8 @@ export function getVotingReputationExtensionDaily(event: any) : VotingReputation
     votingReputationExtensionDaily.date = timestamp;
     votingReputationExtensionDaily.installs = ZERO_BI;
     votingReputationExtensionDaily.initialised = ZERO_BI;
+    votingReputationExtensionDaily.depreciated = ZERO_BI;
+    votingReputationExtensionDaily.uninstalled = ZERO_BI;
     votingReputationExtensionDaily.motions = ZERO_BI;
     votingReputationExtensionDaily.motionsStaked = ZERO_BI;
     votingReputationExtensionDaily.motionsEscalated = ZERO_BI;

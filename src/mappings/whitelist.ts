@@ -47,6 +47,8 @@ export function getWhitelistExtension(event: any) : WhitelistExtension {
 
     whitelistExtension.installs = ZERO_BI;
     whitelistExtension.initialised = ZERO_BI;
+    whitelistExtension.depreciated = ZERO_BI;
+    whitelistExtension.uninstalled = ZERO_BI;
     whitelistExtension.userApproved = ZERO_BI;
     whitelistExtension.agreementSigned = ZERO_BI;
   }
@@ -65,6 +67,8 @@ export function getWhitelistExtensionDaily(event: any) : WhitelistExtensionDaily
     whitelistExtensionDaily.date = timestamp;
     whitelistExtensionDaily.installs = ZERO_BI;
     whitelistExtensionDaily.initialised = ZERO_BI;
+    whitelistExtensionDaily.depreciated = ZERO_BI;
+    whitelistExtensionDaily.uninstalled = ZERO_BI;
     whitelistExtensionDaily.userApproved = ZERO_BI;
     whitelistExtensionDaily.agreementSigned = ZERO_BI;
   }

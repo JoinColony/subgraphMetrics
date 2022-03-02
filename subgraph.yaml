@@ -26,18 +26,12 @@ dataSources:
       eventHandlers:
         - event: 'ColonyAdded(indexed uint256,indexed address,address)'
           handler: handleColonyAdded
-        - event: 'ColonyLabelRegistered(indexed address,bytes32)'
-          handler: handleColonyLabelRegistered
         - event: 'ExtensionInstalled(indexed bytes32,indexed address,uint256)'
           handler: handleExtensionInstalled
         - event: 'ExtensionUninstalled(indexed bytes32,indexed address)'
           handler: handleExtensionUninstalled
         - event: 'ExtensionDeprecated(indexed bytes32,indexed address,bool)'
           handler: handleExtensionDeprecated
-        - event: 'ExtensionUpgraded(indexed bytes32,indexed address,uint256)'
-          handler: handleExtensionUpgraded
-        - event: 'ExtensionAddedToNetwork(indexed bytes32,uint256)'
-          handler: handleExtensionAddedToNetwork
       file: ./src/mappings/colonyNetwork.ts
 templates:
   - name: Token
@@ -94,8 +88,6 @@ templates:
       eventHandlers:
         - event: 'TokensBought(address,uint256,uint256)'
           handler: handleTokensBought
-        - event: 'PeriodUpdated(uint256,uint256)'
-          handler: handlePeriodUpdated
         - event: ExtensionInitialised()
           handler: handleExtensionInitialised
   - name: VotingReputation
@@ -122,22 +114,12 @@ templates:
             MotionStaked(indexed uint256,indexed address,indexed
             uint256,uint256)
           handler: handleMotionStaked
-        - event: 'MotionVoteSubmitted(indexed uint256,indexed address)'
-          handler: handleMotionVoteSubmitted
-        - event: 'MotionVoteRevealed(indexed uint256,indexed address,indexed uint256)'
-          handler: handleMotionVoteRevealed
         - event: 'MotionFinalized(indexed uint256,bytes,bool)'
           handler: handleMotionFinalized
         - event: >-
             MotionEscalated(indexed uint256,address,indexed uint256,indexed
             uint256)
           handler: handleMotionEscalated
-        - event: >-
-            MotionRewardClaimed(indexed uint256,indexed address,indexed
-            uint256,uint256)
-          handler: handleMotionRewardClaimed
-        - event: 'MotionEventSet(indexed uint256,uint256)'
-          handler: handleMotionEventSet
   - name: Whitelist
     kind: ethereum/contract
     network: mainnet

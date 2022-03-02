@@ -37,6 +37,8 @@ export function getCoinMachineExtension(event: any) : CoinMachineExtension {
 
     coinMachineExtension.installs = ZERO_BI;
     coinMachineExtension.initialised = ZERO_BI;
+    coinMachineExtension.depreciated = ZERO_BI;
+    coinMachineExtension.uninstalled = ZERO_BI;
     coinMachineExtension.fundsRaisedNative = ZERO_BD;
     coinMachineExtension.fundsRaisedUSD = ZERO_BD;
     coinMachineExtension.tokens = [];
@@ -59,6 +61,8 @@ export function getCoinMachineExtensionDaily(event: any) : CoinMachineExtensionD
 
     coinMachineExtensionDaily.installs = ZERO_BI;
     coinMachineExtensionDaily.initialised = ZERO_BI;
+    coinMachineExtensionDaily.depreciated = ZERO_BI;
+    coinMachineExtensionDaily.uninstalled = ZERO_BI;
     coinMachineExtensionDaily.fundsRaisedNative = ZERO_BD;
     coinMachineExtensionDaily.fundsRaisedUSD = ZERO_BD;
     coinMachineExtensionDaily.tokens = [];

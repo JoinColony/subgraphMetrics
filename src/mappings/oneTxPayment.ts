@@ -39,6 +39,8 @@ export function getOneTxPaymentExtension(event: any) : OneTxPaymentExtension {
 
     oneTxPaymentExtension.installs = ZERO_BI;
     oneTxPaymentExtension.initialised = ZERO_BI;
+    oneTxPaymentExtension.depreciated = ZERO_BI;
+    oneTxPaymentExtension.uninstalled = ZERO_BI;
     oneTxPaymentExtension.totalPayments = ZERO_BI;
     oneTxPaymentExtension.tokens = [];
   }
@@ -58,6 +60,8 @@ export function getOneTxPaymentExtensionDaily(event: any) : OneTxPaymentExtensio
 
     oneTxPaymentExtensionDaily.installs = ZERO_BI;
     oneTxPaymentExtensionDaily.initialised = ZERO_BI;
+    oneTxPaymentExtensionDaily.depreciated = ZERO_BI;
+    oneTxPaymentExtensionDaily.uninstalled = ZERO_BI;
     oneTxPaymentExtensionDaily.totalPayments = ZERO_BI;
     oneTxPaymentExtensionDaily.tokens = [];
   }

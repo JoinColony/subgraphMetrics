@@ -93,6 +93,8 @@ type VotingReputationExtension @entity {
   id: ID!
   installs: BigInt!
   initialised: BigInt!
+  depreciated: BigInt!
+  uninstalled: BigInt!
   # uninstalls: BigInt! // Not emitted in contracts
   motions: BigInt!
   motionsStaked: BigInt!
@@ -108,6 +110,8 @@ type VotingReputationExtensionDaily @entity {
   date: Int!
   installs: BigInt!
   initialised: BigInt!
+  depreciated: BigInt!
+  uninstalled: BigInt!
   # uninstalls: BigInt! // Not emitted in contracts
   motions: BigInt!
   motionsStaked: BigInt!
@@ -122,6 +126,8 @@ type OneTxPaymentExtension @entity {
   id: ID!
   installs: BigInt!
   initialised: BigInt!
+  depreciated: BigInt!
+  uninstalled: BigInt!
   # uninstalls: BigInt! // Not emitted in contracts
   totalPayments: BigInt!
   tokens: [Token!]!
@@ -133,6 +139,8 @@ type OneTxPaymentExtensionDaily @entity {
   date: Int!
   installs: BigInt!
   initialised: BigInt!
+  depreciated: BigInt!
+  uninstalled: BigInt!
   # uninstalls: BigInt! // Not emitted in contracts
   totalPayments: BigInt!
   tokens: [Token!]!
@@ -143,6 +151,8 @@ type CoinMachineExtension @entity {
   id: ID!
   installs: BigInt!
   initialised: BigInt!
+  depreciated: BigInt!
+  uninstalled: BigInt!
   # uninstalls: BigInt! // Not emitted in contracts
   fundsRaisedNative: BigDecimal!
   fundsRaisedUSD: BigDecimal!
@@ -157,6 +167,8 @@ type CoinMachineExtensionDaily @entity {
   date: Int!
   installs: BigInt!
   initialised: BigInt!
+  depreciated: BigInt!
+  uninstalled: BigInt!
   # uninstalls: BigInt! // Not emitted in contracts
   fundsRaisedNative: BigDecimal!
   fundsRaisedUSD: BigDecimal!
@@ -170,6 +182,8 @@ type WhitelistExtension @entity {
   id: ID!
   installs: BigInt!
   initialised: BigInt!
+  depreciated: BigInt!
+  uninstalled: BigInt!
   # uninstalls: BigInt! // Not emitted in contracts
   userApproved: BigInt!
   agreementSigned: BigInt!
@@ -181,6 +195,8 @@ type WhitelistExtensionDaily @entity {
   date: Int!
   installs: BigInt!
   initialised: BigInt!
+  depreciated: BigInt!
+  uninstalled: BigInt!
   # uninstalls: BigInt! // Not emitted in contracts
   userApproved: BigInt!
   agreementSigned: BigInt!
