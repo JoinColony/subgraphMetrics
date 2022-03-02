@@ -10,6 +10,8 @@ import {
 import { VotingReputationExtension, VotingReputationExtensionDaily } from '../../generated/schema';
 
 import { ZERO_BI, ZERO_BD, ONE_BI } from '../utils';
+import { ExtensionDeprecated, ExtensionInstalled, ExtensionUninstalled } from '../../generated/ColonyNetwork/IColonyNetwork';
+import { ethereum } from '@graphprotocol/graph-ts';
 
 export function handleExtensionInitialised(event: ExtensionInitialised): void {
   let votingReputationExtension = getVotingReputationExtension(event);
@@ -67,7 +69,7 @@ export function handleMotionFinalized(event: MotionFinalized): void {
   votingReputationExtensionDaily.save();
 }
 
-export function getVotingReputationExtension(event: any) : VotingReputationExtension {
+export function getVotingReputationExtension(event: ethereum.Event) : VotingReputationExtension {
   // Load VotingReputationExtension
   let votingReputationExtension = VotingReputationExtension.load('1');
 
@@ -91,7 +93,7 @@ export function getVotingReputationExtension(event: any) : VotingReputationExten
   return <VotingReputationExtension>votingReputationExtension;
 }
 
-export function getVotingReputationExtensionDaily(event: any) : VotingReputationExtensionDaily {
+export function getVotingReputationExtensionDaily(event: ethereum.Event) : VotingReputationExtensionDaily {
   let timestamp = event.block.timestamp.toI32();
   let dayID = timestamp / 86400;
   let votingReputationExtensionDaily = VotingReputationExtensionDaily.load(dayID.toString());

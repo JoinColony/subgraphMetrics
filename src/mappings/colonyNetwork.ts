@@ -14,6 +14,8 @@ import {
 
 import { createToken } from './token';
 import { getHandleExtensionDeprecated, getHandleExtensionInstalled, getHandleExtensionUninstalled } from './extensions';
+import { DomainAdded, DomainAdded1 } from '../../generated/templates/Colony/IColony';
+import { ethereum } from '@graphprotocol/graph-ts';
 
 export function handleColonyAdded(event: ColonyAdded): void {
   let colonyMetrics = getColonyMetrics(event);
@@ -42,7 +44,7 @@ export function handleExtensionDeprecated(event: ExtensionDeprecated): void {
   getHandleExtensionDeprecated(event);
 }
 
-export function getColonyMetrics(event: any) : ColonyMetrics {
+export function getColonyMetrics(event: ethereum.Event) : ColonyMetrics {
   // Load ColonyMetrics
   let colonyMetrics = ColonyMetrics.load('1');
 
@@ -67,7 +69,7 @@ export function getColonyMetrics(event: any) : ColonyMetrics {
   return <ColonyMetrics>colonyMetrics;
 }
 
-export function getColonyMetricsDaily(event: any) : ColonyMetricsDaily {
+export function getColonyMetricsDaily(event: ethereum.Event) : ColonyMetricsDaily {
   // Load ColonyMetrics Daily
   let colonyMetrics = ColonyMetrics.load('1');
   let timestamp = event.block.timestamp.toI32();

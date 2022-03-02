@@ -6,6 +6,8 @@ import {
 import { OneTxPaymentExtension, OneTxPaymentExtensionDaily } from '../../generated/schema';
 
 import { ZERO_BI, ONE_BI } from '../utils';
+import { ExtensionDeprecated, ExtensionInstalled, ExtensionUninstalled } from '../../generated/ColonyNetwork/IColonyNetwork';
+import { ethereum } from '@graphprotocol/graph-ts';
 
 export function handleExtensionInitialised(event: ExtensionInitialised): void {
   let oneTxPaymentExtension = getOneTxPaymentExtension(event);
@@ -29,7 +31,7 @@ export function handleOneTxPaymentMade(event: OneTxPaymentMade): void {
   // TODO Handle how much of a token is paid
 }
 
-export function getOneTxPaymentExtension(event: any) : OneTxPaymentExtension {
+export function getOneTxPaymentExtension(event: ethereum.Event) : OneTxPaymentExtension {
   // Load OneTxPaymentExtension
   let oneTxPaymentExtension = OneTxPaymentExtension.load('1');
 
@@ -49,7 +51,7 @@ export function getOneTxPaymentExtension(event: any) : OneTxPaymentExtension {
   return <OneTxPaymentExtension>oneTxPaymentExtension;
 }
 
-export function getOneTxPaymentExtensionDaily(event: any) : OneTxPaymentExtensionDaily {
+export function getOneTxPaymentExtensionDaily(event: ethereum.Event) : OneTxPaymentExtensionDaily {
   let timestamp = event.block.timestamp.toI32();
   let dayID = timestamp / 86400;
   // Load OneTxPaymentExtension

@@ -6,6 +6,7 @@ import {
 
 import { ZERO_BI, ONE_BI } from '../utils';
 import { WhitelistExtension, WhitelistExtensionDaily } from '../../generated/schema';
+import { ethereum } from '@graphprotocol/graph-ts';
 
 export function handleExtensionInitialised(event: ExtensionInitialised): void {
   let whitelistExtension = getWhitelistExtension(event);
@@ -37,12 +38,12 @@ export function handleAgreementSigned(event: AgreementSignedEvent): void {
   whitelistExtensionDaily.save();
 }
 
-export function getWhitelistExtension(event: any) : WhitelistExtension {
+export function getWhitelistExtension(event: ethereum.Event) : WhitelistExtension {
   // Load WhitelistExtension
   let whitelistExtension = WhitelistExtension.load('1');
 
   // If there is no WhitelistExtension, create it now
-  if(WhitelistExtension == null){
+  if(whitelistExtension === null){
     whitelistExtension = new WhitelistExtension('1');
 
     whitelistExtension.installs = ZERO_BI;
@@ -58,7 +59,7 @@ export function getWhitelistExtension(event: any) : WhitelistExtension {
 }
 
 
-export function getWhitelistExtensionDaily(event: any) : WhitelistExtensionDaily {
+export function getWhitelistExtensionDaily(event: ethereum.Event) : WhitelistExtensionDaily {
   let timestamp = event.block.timestamp.toI32();
   let dayID = timestamp / 86400;
   let whitelistExtensionDaily = WhitelistExtensionDaily.load(dayID.toString());

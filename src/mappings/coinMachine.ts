@@ -1,3 +1,5 @@
+import { ethereum } from '@graphprotocol/graph-ts';
+import { ExtensionDeprecated, ExtensionInstalled, ExtensionUninstalled } from '../../generated/ColonyNetwork/IColonyNetwork';
 import { CoinMachineExtension, CoinMachineExtensionDaily } from '../../generated/schema';
 
 import {
@@ -27,7 +29,7 @@ export function handleTokensBought(event: TokensBought): void {
   coinMachineExtensionDaily.save();
 }
 
-export function getCoinMachineExtension(event: any) : CoinMachineExtension {
+export function getCoinMachineExtension(event: ethereum.Event) : CoinMachineExtension {
   // Load CoinMachineExtension
   let coinMachineExtension = CoinMachineExtension.load('1');
 
@@ -49,7 +51,7 @@ export function getCoinMachineExtension(event: any) : CoinMachineExtension {
   return <CoinMachineExtension>coinMachineExtension;
 }
 
-export function getCoinMachineExtensionDaily(event: any) : CoinMachineExtensionDaily {
+export function getCoinMachineExtensionDaily(event: ethereum.Event) : CoinMachineExtensionDaily {
   let timestamp = event.block.timestamp.toI32();
   let dayID = timestamp / 86400;
   // Load CoinMachineExtension

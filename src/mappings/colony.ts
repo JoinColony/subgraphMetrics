@@ -1,7 +1,4 @@
-import { log } from '@graphprotocol/graph-ts';
-
 import {
-  IColony,
   DomainAdded,
   DomainAdded1 as HistoricDomainAdded,
   PaymentAdded,
@@ -19,13 +16,10 @@ import {
   ExpenditureFinalized,
   ExpenditurePayoutSet,
   PayoutClaimed,
-  PaymentFinalized,
   TokensBurned,
 } from '../../generated/templates/Colony/IColony';
 import { ONE_BI } from '../utils';
-import { getColonyMetrics } from './colonyNetwork';
-
-import { createToken } from './token';
+import { getColonyMetrics, getColonyMetricsDaily } from './colonyNetwork';
 
 export function handleColonyFundsClaimed(event: ColonyFundsClaimed): void {
   // TODO: Handle funds claimed by a colony
@@ -84,14 +78,23 @@ export function handlePayoutClaimed(event: PayoutClaimed): void {
 }
 
 export function handleDomainAdded(event: DomainAdded): void {
-  // TODO: Determine if it needs to be tracked
+  let colonyMetrics = getColonyMetrics(event);
+  colonyMetrics.domains = colonyMetrics.domains.plus(ONE_BI);
+  colonyMetrics.save();
+  // Daily
+  let colonyMetricsDaily = getColonyMetricsDaily(event);
+  colonyMetricsDaily.domains = colonyMetricsDaily.domains.plus(ONE_BI);
+  colonyMetricsDaily.save();
 }
 
 export function handleHistoricDomainAdded(event: HistoricDomainAdded): void {
   let colonyMetrics = getColonyMetrics(event);
-
   colonyMetrics.domains = colonyMetrics.domains.plus(ONE_BI);
   colonyMetrics.save();
+  // Daily
+  let colonyMetricsDaily = getColonyMetricsDaily(event);
+  colonyMetricsDaily.domains = colonyMetricsDaily.domains.plus(ONE_BI);
+  colonyMetricsDaily.save();
 }
 
 export function handlePaymentPayoutSet(event: PaymentPayoutSet): void {
