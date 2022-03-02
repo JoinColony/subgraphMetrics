@@ -1,0 +1,188 @@
+# Colony key dapp metrics
+type ColonyMetrics @entity {
+  id: ID!
+  # total number of colonies
+  colonies: BigInt!
+  # total assets under management in native chain token and converted to USD, this only includes tokens that have value
+  nativeAUM: BigDecimal!
+  usdAUM: BigDecimal!
+  # total volume in native chain token and converted to USD, this only includes tokens that have value
+  nativeVolume: BigDecimal!
+  usdVolume: BigDecimal!
+  # total token details
+  tokens: [Token!]!
+  totalTokens: BigInt!
+  totalUnlockedTokens: BigInt!
+  # total domains
+  domains: BigInt!
+  # last update block
+  block: BigInt!
+}
+
+# Data accumulated and condensed into day stats for all of Colony
+type ColonyMetricsDaily @entity {
+  id: ID! # timestamp rounded to current day by dividing by 86400
+  date: Int!
+
+  # total number of colonies for the day cumulative and new
+  colonies: BigInt!
+  newColonies: BigInt!
+  # total assets under management in native chain token and converted to USD, this only includes tokens that have value
+  nativeAUM: BigDecimal!
+  usdAUM: BigDecimal!
+  # total volume in native chain token and converted to USD, this only includes tokens that have value
+  nativeVolume: BigDecimal!
+  usdVolume: BigDecimal!
+  # total token details
+  tokens: [Token!]!
+  totalTokens: BigInt!
+  totalUnlockedTokens: BigInt!
+  # total domains
+  domains: BigInt!
+  # last update block
+  block: BigInt!
+}
+
+type Token @entity
+{
+  # token address
+  id: ID!
+
+  # mirrored from the smart contract
+  symbol: String!
+  name: String!
+  decimals: BigInt!
+
+  # latest value in native token
+  nativeValue: BigDecimal!
+
+  # last update time for native value
+  nativeTimestamp: BigInt
+
+  # last update block for native value
+  nativeBlock: BigInt!
+
+  # latest value in USD
+  usd: BigDecimal!
+  usdTimestamp: BigInt
+  usdBlock: BigInt
+
+  # sum of all token transfers
+  volume: BigDecimal
+
+  # sum of all token transfer valued in native token at the time of the transaction
+  nativeVolume: BigDecimal
+  # sum of all token transfer valued in USD at the time of the transaction
+  usdVolume: BigDecimal
+
+  # total amount of tokens held
+  total: BigDecimal
+  burned: BigDecimal
+
+  # Extensions
+  # Motions
+  totalStaked: BigDecimal
+  # OneTxPayment
+  totalPaymentsValue: BigDecimal
+  # CoinMachine
+  totalSold: BigDecimal
+}
+
+# Colony VotingReputation extension metrics
+type VotingReputationExtension @entity {
+  id: ID!
+  installs: BigInt!
+  initialised: BigInt!
+  # uninstalls: BigInt! // Not emitted in contracts
+  motions: BigInt!
+  motionsStaked: BigInt!
+  motionsEscalated: BigInt!
+  motionsFinalized: BigInt!
+  stakedNative: BigDecimal!
+  stakedUSD: BigDecimal!
+}
+
+# Colony VotingReputation extension metrics daily
+type VotingReputationExtensionDaily @entity {
+  id: ID!
+  date: Int!
+  installs: BigInt!
+  initialised: BigInt!
+  # uninstalls: BigInt! // Not emitted in contracts
+  motions: BigInt!
+  motionsStaked: BigInt!
+  motionsEscalated: BigInt!
+  motionsFinalized: BigInt!
+  stakedNative: BigDecimal!
+  stakedUSD: BigDecimal!
+}
+
+# Colony OneTxPayment extension metrics
+type OneTxPaymentExtension @entity {
+  id: ID!
+  installs: BigInt!
+  initialised: BigInt!
+  # uninstalls: BigInt! // Not emitted in contracts
+  totalPayments: BigInt!
+  tokens: [Token!]!
+}
+
+# Colony OneTxPayment extension metrics daily
+type OneTxPaymentExtensionDaily @entity {
+  id: ID!
+  date: Int!
+  installs: BigInt!
+  initialised: BigInt!
+  # uninstalls: BigInt! // Not emitted in contracts
+  totalPayments: BigInt!
+  tokens: [Token!]!
+}
+
+# Colony CoinMachine extension metrics
+type CoinMachineExtension @entity {
+  id: ID!
+  installs: BigInt!
+  initialised: BigInt!
+  # uninstalls: BigInt! // Not emitted in contracts
+  fundsRaisedNative: BigDecimal!
+  fundsRaisedUSD: BigDecimal!
+  tokens: [Token!]!
+  # Total number of individual token buys
+  tokenBuys: BigInt!
+}
+
+# Colony CoinMachine extension metrics daily
+type CoinMachineExtensionDaily @entity {
+  id: ID!
+  date: Int!
+  installs: BigInt!
+  initialised: BigInt!
+  # uninstalls: BigInt! // Not emitted in contracts
+  fundsRaisedNative: BigDecimal!
+  fundsRaisedUSD: BigDecimal!
+  tokens: [Token!]!
+  # Total number of individual token buys
+  tokenBuys: BigInt!
+}
+
+# Colony Whitelist extension metrics
+type WhitelistExtension @entity {
+  id: ID!
+  installs: BigInt!
+  initialised: BigInt!
+  # uninstalls: BigInt! // Not emitted in contracts
+  userApproved: BigInt!
+  agreementSigned: BigInt!
+}
+
+# Colony Whitelist extension metrics daily
+type WhitelistExtensionDaily @entity {
+  id: ID!
+  date: Int!
+  installs: BigInt!
+  initialised: BigInt!
+  # uninstalls: BigInt! // Not emitted in contracts
+  userApproved: BigInt!
+  agreementSigned: BigInt!
+}
+
