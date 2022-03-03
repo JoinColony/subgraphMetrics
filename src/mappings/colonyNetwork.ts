@@ -28,6 +28,7 @@ export function handleColonyAdded(event: ColonyAdded): void {
   colonyMetrics.save();
   // Daily
   colonyMetricsDaily.colonies = colonyMetricsDaily.colonies.plus(ONE_BI);
+  colonyMetricsDaily.newColonies = colonyMetricsDaily.newColonies.plus(ONE_BI);
   colonyMetricsDaily.save();
 }
 
