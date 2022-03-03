@@ -49,7 +49,7 @@ npm run deploy-network
 
 ```
 {
-  colonyMetricsDailies(first: 5) {
+  colonyMetricsDailies(first: 5, orderBy: date, orderDirection: desc) {
     id
     date
     colonies
