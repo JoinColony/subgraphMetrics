@@ -14,7 +14,6 @@ import {
 
 import { createToken } from './token';
 import { getHandleExtensionDeprecated, getHandleExtensionInstalled, getHandleExtensionUninstalled } from './extensions';
-import { DomainAdded, DomainAdded1 } from '../../generated/templates/Colony/IColony';
 import { ethereum } from '@graphprotocol/graph-ts';
 
 export function handleColonyAdded(event: ColonyAdded): void {
@@ -80,7 +79,7 @@ export function getColonyMetricsDaily(event: ethereum.Event) : ColonyMetricsDail
   // If there is no ColonyMetrics Daily, create it now
   if(colonyMetricsDaily == null){
     colonyMetricsDaily = new ColonyMetricsDaily(dayID.toString());
-
+    colonyMetricsDaily.date = timestamp;
     colonyMetricsDaily.colonies = colonyMetrics.colonies;
     colonyMetricsDaily.newColonies = ZERO_BI;
     colonyMetricsDaily.nativeAUM = colonyMetrics.nativeAUM;

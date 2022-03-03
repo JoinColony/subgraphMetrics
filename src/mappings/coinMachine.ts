@@ -60,7 +60,7 @@ export function getCoinMachineExtensionDaily(event: ethereum.Event) : CoinMachin
   // If there is no CoinMachineExtension, create it now
   if(coinMachineExtensionDaily == null){
     coinMachineExtensionDaily = new CoinMachineExtensionDaily(dayID.toString());
-
+    coinMachineExtensionDaily.date = timestamp;
     coinMachineExtensionDaily.installs = ZERO_BI;
     coinMachineExtensionDaily.initialised = ZERO_BI;
     coinMachineExtensionDaily.depreciated = ZERO_BI;

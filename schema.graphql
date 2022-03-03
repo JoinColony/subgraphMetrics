@@ -63,7 +63,7 @@ type Token @entity
   nativeBlock: BigInt!
 
   # latest value in USD
-  usd: BigDecimal!
+  usd: BigDecimal
   usdTimestamp: BigInt
   usdBlock: BigInt
 
@@ -75,7 +75,7 @@ type Token @entity
   # sum of all token transfer valued in USD at the time of the transaction
   usdVolume: BigDecimal
 
-  # total amount of tokens held
+  # total amount of tokens held by colonies
   total: BigDecimal
   burned: BigDecimal
 

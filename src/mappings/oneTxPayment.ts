@@ -59,7 +59,7 @@ export function getOneTxPaymentExtensionDaily(event: ethereum.Event) : OneTxPaym
   // If there is no OneTxPaymentExtension, create it now
   if(oneTxPaymentExtensionDaily == null){
     oneTxPaymentExtensionDaily = new OneTxPaymentExtensionDaily(dayID.toString());
-
+    oneTxPaymentExtensionDaily.date = timestamp;
     oneTxPaymentExtensionDaily.installs = ZERO_BI;
     oneTxPaymentExtensionDaily.initialised = ZERO_BI;
     oneTxPaymentExtensionDaily.depreciated = ZERO_BI;
