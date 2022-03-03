@@ -22,12 +22,13 @@ export function handleColonyAdded(event: ColonyAdded): void {
 
   // Create the new token
   let tokenAddress = event.params.token.toHexString();
-  createToken(tokenAddress);
+  createToken(tokenAddress, event);
 
   colonyMetrics.colonies = colonyMetrics.colonies.plus(ONE_BI);
   colonyMetrics.save();
   // Daily
-  colonyMetricsDaily.colonies = colonyMetricsDaily.colonies.plus(ONE_BI);
+  colonyMetricsDaily.colonies = colonyMetrics.colonies;
+  colonyMetricsDaily.totalTokens = colonyMetrics.totalTokens;
   colonyMetricsDaily.newColonies = colonyMetricsDaily.newColonies.plus(ONE_BI);
   colonyMetricsDaily.save();
 }
