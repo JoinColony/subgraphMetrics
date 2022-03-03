@@ -24,10 +24,14 @@ export function createToken(tokenAddress: string): void {
     let symbol = t.try_symbol()
     if (!symbol.reverted) {
       token.symbol = symbol.value
+    } else {
+      token.symbol = ""
     }
     let name = t.try_name()
     if (!symbol.reverted) {
       token.name = name.value
+    } else {
+      token.name = ""
     }
     // Set some default values for 
     if (isNATIVE(<TokenSchema>token)) {

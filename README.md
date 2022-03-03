@@ -45,3 +45,33 @@ Build and deploy the subgraph locally
 npm run deploy-network
 ```
 
+### Example Query
+
+```
+{
+  colonyMetricsDailies(first: 5) {
+    id
+    date
+    colonies
+    newColonies
+    domains
+    totalTokens
+    totalUnlockedTokens
+  }
+  colonyMetrics(id: 1) {
+    id
+    colonies
+    domains
+    totalTokens
+    totalUnlockedTokens
+  }
+  votingReputationExtensions(first: 5) {
+    id
+    installs
+    uninstalled
+    initialised
+    motions
+    motionsStaked
+  }
+}
+```
