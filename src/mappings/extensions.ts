@@ -4,7 +4,14 @@ import {
   ExtensionDeprecated,
   ExtensionInstalled,
   ExtensionUninstalled,
+  IColonyNetwork,
 } from '../../generated/ColonyNetwork/IColonyNetwork';
+import {
+  OneTxPayment as OneTxPaymentTemplate,
+  CoinMachine as CoinMachineTemplate,
+  VotingReputation as VotingReputationTemplate,
+  Whitelist as WhitelistTemplate,
+} from '../../generated/templates'
 
 import { ONE_BI } from '../utils';
 
@@ -14,6 +21,8 @@ import { getVotingReputationExtension, getVotingReputationExtensionDaily } from 
 import { getWhitelistExtension, getWhitelistExtensionDaily } from './whitelist';
 
 export function getHandleExtensionInstalled(event: ExtensionInstalled): void {
+  let cn = IColonyNetwork.bind(event.address)
+  let extensionAddress = cn.getExtensionInstallation(event.params.extensionId, event.params.colony)
   let ONE_TX_PAYMENT = crypto.keccak256(ByteArray.fromUTF8("OneTxPayment")).toHexString()
   let COIN_MACHINE = crypto.keccak256(ByteArray.fromUTF8("CoinMachine")).toHexString()
   let VOTING_REPUTATION = crypto.keccak256(ByteArray.fromUTF8("VotingReputation")).toHexString()
@@ -27,6 +36,9 @@ export function getHandleExtensionInstalled(event: ExtensionInstalled): void {
     let oneTxPaymentExtensionDaily = getOneTxPaymentExtensionDaily(event);
     oneTxPaymentExtensionDaily.installs = oneTxPaymentExtensionDaily.installs.plus(ONE_BI);
     oneTxPaymentExtensionDaily.save();
+    
+    // Instantiate template
+    OneTxPaymentTemplate.create(extensionAddress)
   }
 
   if (event.params.extensionId.toHexString() == COIN_MACHINE) {
@@ -37,6 +49,9 @@ export function getHandleExtensionInstalled(event: ExtensionInstalled): void {
     let coinMachineExtensionDaily = getCoinMachineExtensionDaily(event);
     coinMachineExtensionDaily.installs = coinMachineExtensionDaily.installs.plus(ONE_BI);
     coinMachineExtensionDaily.save();
+
+    // Instantiate template
+    CoinMachineTemplate.create(extensionAddress);
   }
 
   if (event.params.extensionId.toHexString() == VOTING_REPUTATION) {
@@ -47,6 +62,9 @@ export function getHandleExtensionInstalled(event: ExtensionInstalled): void {
     let votingReputationExtensionDaily = getVotingReputationExtensionDaily(event);
     votingReputationExtensionDaily.installs = votingReputationExtensionDaily.installs.plus(ONE_BI);
     votingReputationExtensionDaily.save();
+    
+    // Instantiate template
+    VotingReputationTemplate.create(extensionAddress)
   }
 
   if (event.params.extensionId.toHexString() == WHITELIST) {
@@ -57,6 +75,9 @@ export function getHandleExtensionInstalled(event: ExtensionInstalled): void {
     let whitelistExtensionDaily = getWhitelistExtensionDaily(event);
     whitelistExtensionDaily.installs = whitelistExtensionDaily.installs.plus(ONE_BI);
     whitelistExtensionDaily.save();
+    
+    // Instantiate template
+    WhitelistTemplate.create(extensionAddress)
   }
 }
 

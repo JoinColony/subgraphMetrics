@@ -19,7 +19,8 @@
     "deploy": "graph deploy arrenv/colony-metrics-subgraph --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
     "deploy-local": "graph deploy arrenv/colony-metrics-subgraph --ipfs http://localhost:5001 --node http://127.0.0.1:8020",
     "deploy-network": "graph deploy --access-token ${GRAPH_TOKEN} arrenv/${SUBGRAPH_NAME} --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
-    "graph-auth": "graph auth https://api.thegraph.com/deploy ${GRAPH_TOKEN}"
+    "graph-auth": "graph auth https://api.thegraph.com/deploy ${GRAPH_TOKEN}",
+    "deploy-auth": "graph deploy arrenv/colony-metrics-subgraph --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ --access-token ${GRAPH_TOKEN}"
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "^0.19.0",

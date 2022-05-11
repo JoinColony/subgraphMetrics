@@ -10,7 +10,6 @@ import {
 import { VotingReputationExtension, VotingReputationExtensionDaily } from '../../generated/schema';
 
 import { ZERO_BI, ZERO_BD, ONE_BI } from '../utils';
-import { ExtensionDeprecated, ExtensionInstalled, ExtensionUninstalled } from '../../generated/ColonyNetwork/IColonyNetwork';
 import { ethereum } from '@graphprotocol/graph-ts';
 
 export function handleExtensionInitialised(event: ExtensionInitialised): void {
@@ -34,10 +33,6 @@ export function handleMotionCreated(event: MotionCreated): void {
 }
 
 export function handleMotionStaked(event: MotionStaked): void {
-  let extension = VotingReputationContract.bind(event.address);
-  let motionId = event.params.motionId;
-  let chainMotion = extension.getMotion(motionId);
-
   let votingReputationExtension = getVotingReputationExtension(event);
   votingReputationExtension.motionsStaked = votingReputationExtension.motionsStaked.plus(ONE_BI);
   votingReputationExtension.save();
@@ -47,6 +42,9 @@ export function handleMotionStaked(event: MotionStaked): void {
   votingReputationExtensionDaily.save();
 
   // TODO Handle how much is staked for each token
+  // let extension = VotingReputationContract.bind(event.address);
+  // let motionId = event.params.motionId;
+  // let chainMotion = extension.getMotion(motionId);
 }
 
 export function handleMotionEscalated(event: MotionEscalated): void {

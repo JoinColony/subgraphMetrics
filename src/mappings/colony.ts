@@ -1,8 +1,6 @@
 import {
   DomainAdded,
   DomainAdded1 as HistoricDomainAdded,
-  PaymentAdded,
-  PaymentPayoutSet,
   TokenUnlocked,
   TokensMinted,
   ColonyFundsClaimed,
@@ -14,12 +12,18 @@ import {
   ExpenditureTransferred,
   ExpenditureCancelled,
   ExpenditureFinalized,
-  ExpenditurePayoutSet,
   PayoutClaimed,
   TokensBurned,
+  TaskAdded,
+  TaskCompleted,
+  TaskFinalized,
+  PaymentFinalized,
+  ColonyUpgraded,
+  ColonyFundsMovedBetweenFundingPots__Params,
 } from '../../generated/templates/Colony/IColony';
 import { ONE_BI } from '../utils';
 import { getColonyMetrics, getColonyMetricsDaily } from './colonyNetwork';
+import { RecoveryModeEntered, RecoveryModeExitApproved } from '../../generated/ColonyNetwork/IColonyNetwork';
 
 export function handleColonyFundsClaimed(event: ColonyFundsClaimed): void {
   // TODO: Handle funds claimed by a colony
@@ -57,11 +61,15 @@ export function handleExpenditureFinalized(event: ExpenditureFinalized): void {
   // TODO: Determine if it needs to be tracked
 }
 
-export function handleExpenditurePayoutSet(event: ExpenditurePayoutSet): void {
+export function handleTaskAdded(event: TaskAdded): void {
   // TODO: Determine if it needs to be tracked
 }
 
-export function handlePaymentAdded(event: PaymentAdded): void {
+export function handleTaskCompleted(event: TaskCompleted): void {
+  // TODO: Determine if it needs to be tracked
+}
+
+export function handleTaskFinalized(event: TaskFinalized): void {
   // TODO: Determine if it needs to be tracked
 }
 
@@ -97,10 +105,26 @@ export function handleHistoricDomainAdded(event: HistoricDomainAdded): void {
   colonyMetricsDaily.save();
 }
 
-export function handlePaymentPayoutSet(event: PaymentPayoutSet): void {
+export function handlePaymentFinalized(event: PaymentFinalized): void {
   // TODO: Determine if it needs to be tracked
 }
 
 export function handleTokensBurned(event: TokensBurned): void {
   // TODO: Handle tokens burned
+}
+
+export function handleRecoveryModeEntered(event: RecoveryModeEntered): void {
+  // TODO: Handle recovery mode entered
+}
+
+export function handleRecoveryModeExitApproved(event: RecoveryModeExitApproved): void {
+  // TODO: Handle recovery mode exit approved
+}
+
+export function handleFundsMovedBetweenFundingPots(event: ColonyFundsMovedBetweenFundingPots__Params): void {
+  // TODO: Handle funds moved between funding pots
+}
+
+export function handleColonyUpgraded(event: ColonyUpgraded): void {
+  // TODO: Handle Colony upgraded
 }

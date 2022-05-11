@@ -4,6 +4,7 @@ import {
   ExtensionUninstalled,
   ExtensionDeprecated,
 } from '../../generated/ColonyNetwork/IColonyNetwork';
+import { Colony as ColonyTemplate } from '../../generated/templates'
 
 import { ZERO_BI, ZERO_BD, ONE_BI } from '../utils';
 
@@ -31,6 +32,9 @@ export function handleColonyAdded(event: ColonyAdded): void {
   colonyMetricsDaily.totalTokens = colonyMetrics.totalTokens;
   colonyMetricsDaily.newColonies = colonyMetricsDaily.newColonies.plus(ONE_BI);
   colonyMetricsDaily.save();
+
+  // Instantiate template
+  ColonyTemplate.create(event.params.colonyAddress)
 }
 
 export function handleExtensionInstalled(event: ExtensionInstalled): void {

@@ -43,6 +43,43 @@ type ColonyMetricsDaily @entity {
   block: BigInt!
 }
 
+# Metrics on colonies
+type Colonies @entity {
+  id: ID!
+  # total assets under management in native chain token and converted to USD, this only includes tokens that have value
+  nativeAUM: BigDecimal!
+  usdAUM: BigDecimal!
+  # total volume in native chain token and converted to USD, this only includes tokens that have value
+  nativeVolume: BigDecimal!
+  usdVolume: BigDecimal!
+  # total token details
+  tokens: [Token!]!
+  # total number of transactions
+  transactions: BigInt!
+  # total domains
+  domains: BigInt!
+  # last update block
+  block: BigInt!
+}
+
+# Metrics on colonies daily
+type ColoniesDaily @entity {
+  id: ID! # timestamp rounded to current day by dividing by 86400
+  date: Int!
+  # total assets under management in native chain token and converted to USD, this only includes tokens that have value
+  nativeAUM: BigDecimal!
+  usdAUM: BigDecimal!
+  # total volume in native chain token and converted to USD, this only includes tokens that have value
+  nativeVolume: BigDecimal!
+  usdVolume: BigDecimal!
+  # total number of transactions
+  transactions: BigInt!
+  # total domains
+  domains: BigInt!
+  # last update block
+  block: BigInt!
+}
+
 type Token @entity
 {
   # token address
