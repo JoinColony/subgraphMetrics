@@ -199,8 +199,6 @@ templates:
           handler: handleRecoveryModeEntered
         - event: RecoveryModeExitApproved(address)
           handler: handleRecoveryModeExitApproved
-        - event: RecoveryModeExited(address)
-          handler: handleRecoveryModeExited
         - event: >-
             ColonyFundsMovedBetweenFundingPots(address,indexed uint256,indexed
             uint256,uint256,address)
