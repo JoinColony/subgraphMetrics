@@ -9,13 +9,14 @@ import { Colony as ColonyTemplate } from '../../generated/templates'
 import { ZERO_BI, ZERO_BD, ONE_BI } from '../utils';
 
 import {
+  Colony,
   ColonyMetrics,
   ColonyMetricsDaily
 } from '../../generated/schema';
 
 import { createToken } from './token';
 import { getHandleExtensionDeprecated, getHandleExtensionInstalled, getHandleExtensionUninstalled } from './extensions';
-import { ethereum } from '@graphprotocol/graph-ts';
+import { Address, ethereum } from '@graphprotocol/graph-ts';
 
 export function handleColonyAdded(event: ColonyAdded): void {
   let colonyMetrics = getColonyMetrics(event);
@@ -33,6 +34,7 @@ export function handleColonyAdded(event: ColonyAdded): void {
   colonyMetricsDaily.newColonies = colonyMetricsDaily.newColonies.plus(ONE_BI);
   colonyMetricsDaily.save();
 
+  getColonies(event)
   // Instantiate template
   ColonyTemplate.create(event.params.colonyAddress)
 }
@@ -102,4 +104,21 @@ export function getColonyMetricsDaily(event: ethereum.Event) : ColonyMetricsDail
 
   colonyMetricsDaily.save();
   return <ColonyMetricsDaily>colonyMetricsDaily;
+}
+
+export function getColonies(event: ColonyAdded) : Colony {
+  // Load ColonyMetrics
+  const colonyAddress = event.params.colonyAddress;
+  const timestamp = event.block.timestamp.toI32();
+  let colony = Colony.load(colonyAddress.toHex());
+
+  // If there is no ColonyMetrics, create it now
+  if(colony == null){
+    colony = new Colony(colonyAddress.toHexString());
+
+    colony.created = timestamp;
+  }
+
+  colony.save();
+  return <Colony>colony;
 }

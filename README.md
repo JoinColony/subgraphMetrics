@@ -85,6 +85,10 @@ Starting block: 11800000
     motions
     motionsStaked
   }
+  colonies(first: 5, orderBy: created, orderDirection: desc) {
+    id
+    created
+  }
 }
 ```
 

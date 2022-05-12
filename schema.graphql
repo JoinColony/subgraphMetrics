@@ -21,7 +21,8 @@ type ColonyMetrics @entity {
 
 # Data accumulated and condensed into day stats for all of Colony
 type ColonyMetricsDaily @entity {
-  id: ID! # timestamp rounded to current day by dividing by 86400
+  id: ID!
+  # timestamp rounded to current day by dividing by 86400
   date: Int!
 
   # total number of colonies for the day cumulative and new
@@ -44,27 +45,16 @@ type ColonyMetricsDaily @entity {
 }
 
 # Metrics on colonies
-type Colonies @entity {
+type Colony @entity {
   id: ID!
-  # total assets under management in native chain token and converted to USD, this only includes tokens that have value
-  nativeAUM: BigDecimal!
-  usdAUM: BigDecimal!
-  # total volume in native chain token and converted to USD, this only includes tokens that have value
-  nativeVolume: BigDecimal!
-  usdVolume: BigDecimal!
-  # total token details
-  tokens: [Token!]!
-  # total number of transactions
-  transactions: BigInt!
-  # total domains
-  domains: BigInt!
-  # last update block
-  block: BigInt!
+  # timestamp rounded to current day by dividing by 86400
+  created: Int!
 }
 
 # Metrics on colonies daily
 type ColoniesDaily @entity {
-  id: ID! # timestamp rounded to current day by dividing by 86400
+  id: ID!
+  # timestamp rounded to current day by dividing by 86400
   date: Int!
   # total assets under management in native chain token and converted to USD, this only includes tokens that have value
   nativeAUM: BigDecimal!
