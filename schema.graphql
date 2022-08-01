@@ -1,20 +1,34 @@
 # Colony key dapp metrics
 type ColonyMetrics @entity {
   id: ID!
+
   # total number of colonies
   colonies: BigInt!
+
   # total assets under management in native chain token and converted to USD, this only includes tokens that have value
-  nativeAUM: BigDecimal!
-  usdAUM: BigDecimal!
+  nativeAssets: BigDecimal!
+  usdAssets: BigDecimal!
+
   # total volume in native chain token and converted to USD, this only includes tokens that have value
   nativeVolume: BigDecimal!
   usdVolume: BigDecimal!
+
   # total token details
   tokens: [Token!]!
   totalTokens: BigInt!
   totalUnlockedTokens: BigInt!
+
+  # total transactions
+  totalTransactions: BigInt!
+  totalTransactionsValue: BigDecimal!
+
+  # total fees count and value
+  totalFeesCount: BigInt!
+  totalFeesValueUSD: BigDecimal!
+
   # total domains
   domains: BigInt!
+
   # last update block
   block: BigInt!
 }
@@ -22,24 +36,38 @@ type ColonyMetrics @entity {
 # Data accumulated and condensed into day stats for all of Colony
 type ColonyMetricsDaily @entity {
   id: ID!
+
   # timestamp rounded to current day by dividing by 86400
   date: Int!
 
   # total number of colonies for the day cumulative and new
   colonies: BigInt!
   newColonies: BigInt!
+
   # total assets under management in native chain token and converted to USD, this only includes tokens that have value
-  nativeAUM: BigDecimal!
-  usdAUM: BigDecimal!
+  nativeAssets: BigDecimal!
+  usdAssets: BigDecimal!
+
   # total volume in native chain token and converted to USD, this only includes tokens that have value
   nativeVolume: BigDecimal!
   usdVolume: BigDecimal!
+
   # total token details
   tokens: [Token!]!
   totalTokens: BigInt!
   totalUnlockedTokens: BigInt!
+
+  # total transactions
+  totalTransactions: BigInt!
+  totalTransactionsValue: BigDecimal!
+
+  # total fees count and value
+  totalFeesCount: BigInt!
+  totalFeesValueUSD: BigDecimal!
+   
   # total domains
   domains: BigInt!
+
   # last update block
   block: BigInt!
 }
@@ -47,6 +75,29 @@ type ColonyMetricsDaily @entity {
 # Metrics on colonies
 type Colony @entity {
   id: ID!
+  
+  # total assets value in native chain token and converted to USD, this only includes tokens that have value
+  nativeAssets: BigDecimal!
+  usdAssets: BigDecimal!
+  
+  # total volume in native chain token and converted to USD, this only includes tokens that have value
+  nativeVolume: BigDecimal!
+  usdVolume: BigDecimal!
+
+  # Colony's tokens
+  tokens: [Token!]!
+
+  # total transactions
+  totalTransactions: BigInt!
+  totalTransactionsValue: BigDecimal!
+
+  # total fees count and value
+  totalFeesCount: BigInt!
+  totalFeesValueUSD: BigDecimal!
+
+  # total domains
+  domains: BigInt!
+
   # timestamp rounded to current day by dividing by 86400
   created: Int!
 }
@@ -54,20 +105,34 @@ type Colony @entity {
 # Metrics on colonies daily
 type ColoniesDaily @entity {
   id: ID!
+  
   # timestamp rounded to current day by dividing by 86400
   date: Int!
-  # total assets under management in native chain token and converted to USD, this only includes tokens that have value
-  nativeAUM: BigDecimal!
-  usdAUM: BigDecimal!
+  
+  # total assets value in native chain token and converted to USD, this only includes tokens that have value
+  nativeAssets: BigDecimal!
+  usdAssets: BigDecimal!
+  
   # total volume in native chain token and converted to USD, this only includes tokens that have value
   nativeVolume: BigDecimal!
   usdVolume: BigDecimal!
-  # total number of transactions
-  transactions: BigInt!
+  
+  # Colony's tokens
+  tokens: [Token!]!
+  
+  # total transactions
+  totalTransactions: BigInt!
+  totalTransactionsValue: BigDecimal!
+
+  # total fees count and value
+  totalFeesCount: BigInt!
+  totalFeesValueUSD: BigDecimal!
+
   # total domains
   domains: BigInt!
+  
   # last update block
-  block: BigInt!
+  block: BigInt
 }
 
 type Token @entity
@@ -99,18 +164,30 @@ type Token @entity
 
   # sum of all token transfer valued in native token at the time of the transaction
   nativeVolume: BigDecimal
+
   # sum of all token transfer valued in USD at the time of the transaction
   usdVolume: BigDecimal
 
   # total amount of tokens held by colonies
-  total: BigDecimal
+  totalMinted: BigInt
+  totalHeld: BigDecimal
   burned: BigDecimal
+
+  # total transactions
+  totalTransactions: BigInt!
+  totalTransactionsValue: BigDecimal!
+
+  # total fees count and value
+  totalFeesCount: BigInt!
+  totalFeesValueUSD: BigDecimal!
 
   # Extensions
   # Motions
   totalStaked: BigDecimal
+
   # OneTxPayment
   totalPaymentsValue: BigDecimal
+
   # CoinMachine
   totalSold: BigDecimal
 }
@@ -122,6 +199,7 @@ type VotingReputationExtension @entity {
   initialised: BigInt!
   depreciated: BigInt!
   uninstalled: BigInt!
+  
   # uninstalls: BigInt! // Not emitted in contracts
   motions: BigInt!
   motionsStaked: BigInt!
@@ -139,6 +217,7 @@ type VotingReputationExtensionDaily @entity {
   initialised: BigInt!
   depreciated: BigInt!
   uninstalled: BigInt!
+  
   # uninstalls: BigInt! // Not emitted in contracts
   motions: BigInt!
   motionsStaked: BigInt!
@@ -155,6 +234,7 @@ type OneTxPaymentExtension @entity {
   initialised: BigInt!
   depreciated: BigInt!
   uninstalled: BigInt!
+  
   # uninstalls: BigInt! // Not emitted in contracts
   totalPayments: BigInt!
   tokens: [Token!]!
@@ -168,6 +248,7 @@ type OneTxPaymentExtensionDaily @entity {
   initialised: BigInt!
   depreciated: BigInt!
   uninstalled: BigInt!
+  
   # uninstalls: BigInt! // Not emitted in contracts
   totalPayments: BigInt!
   tokens: [Token!]!
@@ -180,10 +261,12 @@ type CoinMachineExtension @entity {
   initialised: BigInt!
   depreciated: BigInt!
   uninstalled: BigInt!
+  
   # uninstalls: BigInt! // Not emitted in contracts
   fundsRaisedNative: BigDecimal!
   fundsRaisedUSD: BigDecimal!
   tokens: [Token!]!
+  
   # Total number of individual token buys
   tokenBuys: BigInt!
 }
@@ -196,10 +279,12 @@ type CoinMachineExtensionDaily @entity {
   initialised: BigInt!
   depreciated: BigInt!
   uninstalled: BigInt!
+  
   # uninstalls: BigInt! // Not emitted in contracts
   fundsRaisedNative: BigDecimal!
   fundsRaisedUSD: BigDecimal!
   tokens: [Token!]!
+  
   # Total number of individual token buys
   tokenBuys: BigInt!
 }
@@ -211,6 +296,7 @@ type WhitelistExtension @entity {
   initialised: BigInt!
   depreciated: BigInt!
   uninstalled: BigInt!
+  
   # uninstalls: BigInt! // Not emitted in contracts
   userApproved: BigInt!
   agreementSigned: BigInt!
@@ -224,6 +310,7 @@ type WhitelistExtensionDaily @entity {
   initialised: BigInt!
   depreciated: BigInt!
   uninstalled: BigInt!
+  
   # uninstalls: BigInt! // Not emitted in contracts
   userApproved: BigInt!
   agreementSigned: BigInt!

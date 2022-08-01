@@ -9,12 +9,13 @@ import { Colony as ColonyTemplate } from '../../generated/templates'
 import { ZERO_BI, ZERO_BD, ONE_BI } from '../utils';
 
 import {
+  ColoniesDaily,
   Colony,
   ColonyMetrics,
   ColonyMetricsDaily
 } from '../../generated/schema';
 
-import { createToken } from './token';
+import { getToken } from './token';
 import { getHandleExtensionDeprecated, getHandleExtensionInstalled, getHandleExtensionUninstalled } from './extensions';
 import { Address, ethereum } from '@graphprotocol/graph-ts';
 
@@ -24,17 +25,18 @@ export function handleColonyAdded(event: ColonyAdded): void {
 
   // Create the new token
   let tokenAddress = event.params.token.toHexString();
-  createToken(tokenAddress, event);
+  getToken(tokenAddress, event);
 
   colonyMetrics.colonies = colonyMetrics.colonies.plus(ONE_BI);
   colonyMetrics.save();
   // Daily
   colonyMetricsDaily.colonies = colonyMetrics.colonies;
-  colonyMetricsDaily.totalTokens = colonyMetrics.totalTokens;
   colonyMetricsDaily.newColonies = colonyMetricsDaily.newColonies.plus(ONE_BI);
   colonyMetricsDaily.save();
 
-  getColonies(event)
+  getColonies(event);
+  getColoniesDaily(event);
+
   // Instantiate template
   ColonyTemplate.create(event.params.colonyAddress)
 }
@@ -60,13 +62,18 @@ export function getColonyMetrics(event: ethereum.Event) : ColonyMetrics {
     colonyMetrics = new ColonyMetrics('1');
 
     colonyMetrics.colonies = ZERO_BI;
-    colonyMetrics.nativeAUM = ZERO_BD;
-    colonyMetrics.usdAUM = ZERO_BD;
+    colonyMetrics.nativeAssets = ZERO_BD;
+    colonyMetrics.usdAssets = ZERO_BD;
     colonyMetrics.nativeVolume = ZERO_BD;
     colonyMetrics.usdVolume = ZERO_BD;
     colonyMetrics.tokens = [];
     colonyMetrics.totalTokens = ZERO_BI;
     colonyMetrics.totalUnlockedTokens = ZERO_BI;
+    colonyMetrics.totalTransactions = ZERO_BI;
+    colonyMetrics.totalTransactionsValue = ZERO_BD;
+    colonyMetrics.totalFeesCount = ZERO_BI;
+    colonyMetrics.totalFeesValueUSD = ZERO_BD;
+    colonyMetrics.usdVolume = ZERO_BD;
     colonyMetrics.domains = ZERO_BI;
   }
 
@@ -81,23 +88,27 @@ export function getColonyMetricsDaily(event: ethereum.Event) : ColonyMetricsDail
   let colonyMetrics = ColonyMetrics.load('1');
   let timestamp = event.block.timestamp.toI32();
   let dayID = timestamp / 86400;
-  // Load CoinMachineExtension
+  // Load Colony Daily Metrics
   let colonyMetricsDaily = ColonyMetricsDaily.load(dayID.toString());
 
   // If there is no ColonyMetrics Daily, create it now
   if(colonyMetricsDaily == null){
     colonyMetricsDaily = new ColonyMetricsDaily(dayID.toString());
     colonyMetricsDaily.date = timestamp;
-    colonyMetricsDaily.colonies = colonyMetrics.colonies;
+    colonyMetricsDaily.colonies = ZERO_BI;
     colonyMetricsDaily.newColonies = ZERO_BI;
-    colonyMetricsDaily.nativeAUM = colonyMetrics.nativeAUM;
-    colonyMetricsDaily.usdAUM = colonyMetrics.usdAUM;
+    colonyMetricsDaily.nativeAssets = ZERO_BD;
+    colonyMetricsDaily.usdAssets = ZERO_BD;
     colonyMetricsDaily.nativeVolume = ZERO_BD;
     colonyMetricsDaily.usdVolume = ZERO_BD;
     colonyMetricsDaily.tokens = [];
-    colonyMetricsDaily.totalTokens = colonyMetrics.totalTokens;
-    colonyMetricsDaily.totalUnlockedTokens = colonyMetrics.totalUnlockedTokens;
-    colonyMetricsDaily.domains = colonyMetrics.domains;
+    colonyMetricsDaily.totalTokens = ZERO_BI;
+    colonyMetricsDaily.totalUnlockedTokens = ZERO_BI;
+    colonyMetricsDaily.totalTransactions = ZERO_BI;
+    colonyMetricsDaily.totalTransactionsValue = ZERO_BD;
+    colonyMetricsDaily.totalFeesCount = ZERO_BI;
+    colonyMetricsDaily.totalFeesValueUSD = ZERO_BD;
+    colonyMetricsDaily.domains = ZERO_BI;
   }
 
   colonyMetricsDaily.block = event.block.number;
@@ -106,6 +117,7 @@ export function getColonyMetricsDaily(event: ethereum.Event) : ColonyMetricsDail
   return <ColonyMetricsDaily>colonyMetricsDaily;
 }
 
+// On new colony creation tracking each Colony
 export function getColonies(event: ColonyAdded) : Colony {
   // Load ColonyMetrics
   const colonyAddress = event.params.colonyAddress;
@@ -115,10 +127,51 @@ export function getColonies(event: ColonyAdded) : Colony {
   // If there is no ColonyMetrics, create it now
   if(colony == null){
     colony = new Colony(colonyAddress.toHexString());
-
+    colony.nativeAssets = ZERO_BD;
+    colony.usdAssets = ZERO_BD;
+    colony.nativeVolume = ZERO_BD;
+    colony.usdVolume = ZERO_BD;
+    colony.tokens = [];
+    colony.totalTransactions = ZERO_BI;
+    colony.totalTransactionsValue = ZERO_BD;
+    colony.totalFeesCount = ZERO_BI;
+    colony.totalFeesValueUSD = ZERO_BD;
+    colony.domains = ZERO_BI;
     colony.created = timestamp;
   }
 
   colony.save();
   return <Colony>colony;
+}
+
+// Tracking each Colony's daily stats
+// NOTE: Overkill maybe, but used to identify if 
+export function getColoniesDaily(event: ColonyAdded) : ColoniesDaily {
+  // Load ColonyMetrics
+  const colonyAddress: Address = event.params.colonyAddress;
+  let timestamp = event.block.timestamp.toI32();
+  let dayID = timestamp / 86400;
+
+  // Load Colony's Daily Metrics
+  let colonyDailies = ColoniesDaily.load(colonyAddress.toString() + '_' + dayID.toString());
+
+  // If there is no ColonyMetrics, create it now
+  if(colonyDailies == null){
+    // Create id with address and date
+    colonyDailies = new ColoniesDaily(colonyAddress.toString() + '_' + dayID.toString());
+    colonyDailies.nativeAssets = ZERO_BD;
+    colonyDailies.usdAssets = ZERO_BD;
+    colonyDailies.nativeVolume = ZERO_BD;
+    colonyDailies.usdVolume = ZERO_BD;
+    colonyDailies.tokens = [];
+    colonyDailies.totalTransactions = ZERO_BI;
+    colonyDailies.totalTransactionsValue = ZERO_BD;
+    colonyDailies.totalFeesCount = ZERO_BI;
+    colonyDailies.totalFeesValueUSD = ZERO_BD;
+    colonyDailies.domains = ZERO_BI;
+    colonyDailies.date = timestamp;
+  }
+
+  colonyDailies.save();
+  return <ColoniesDaily>colonyDailies;
 }

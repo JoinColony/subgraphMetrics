@@ -21,9 +21,10 @@ import {
   ColonyUpgraded,
   ColonyFundsMovedBetweenFundingPots__Params,
 } from '../../generated/templates/Colony/IColony';
-import { ONE_BI } from '../utils';
+import { ONE_BI, ZERO_BI } from '../utils';
 import { getColonyMetrics, getColonyMetricsDaily } from './colonyNetwork';
 import { RecoveryModeEntered, RecoveryModeExitApproved } from '../../generated/ColonyNetwork/IColonyNetwork';
+import { getToken } from './token';
 
 export function handleColonyFundsClaimed(event: ColonyFundsClaimed): void {
   // TODO: Handle funds claimed by a colony
@@ -78,28 +79,56 @@ export function handleTokenUnlocked(event: TokenUnlocked): void {
 }
 
 export function handleTokensMinted(event: TokensMinted): void {
-  // TODO: Handle tokens minted
+  // Get the token being minted
+  let token = getToken(event.params.who.toHexString(), event);
+  if (token) {
+    if (token.totalMinted) {
+      token.totalMinted = token.totalMinted.plus(event.params.amount);
+    } else {
+      token.totalMinted = ZERO_BI;
+    }
+    token.save();
+  }
 }
 
 export function handlePayoutClaimed(event: PayoutClaimed): void {
-  // TODO: Determine if it needs to be tracked
+  // Work out number of outgoing fee'd transactions
+  // Colony wide metrics
+  let colonyMetrics = getColonyMetrics(event);
+  colonyMetrics.totalFeesCount = colonyMetrics.totalFeesCount.plus(ONE_BI);
+  colonyMetrics.save();
+  // Daily Colony wide metrics
+  let colonyMetricsDaily = getColonyMetricsDaily(event);
+  colonyMetricsDaily.totalFeesCount = colonyMetricsDaily.totalFeesCount.plus(ONE_BI);
+  colonyMetricsDaily.save();
+
+  // Get the feeInverse from ColonyNetwork
+  // const NETWORK_ADDRESS: Address = (process.env.NETWORK_ADDRESS as unknown) as Address; 
+  // let ColonyNetwork = IColonyNetwork.bind(NETWORK_ADDRESS);
+  // let feeInverse = ColonyNetwork.getFeeInverse();
+  // event.params.amount
+  // event.params.token
+  // const payoutAndFee = remainder.mul(feeInverse).plus(feeInverse).div(feeInverse.sub(1));
+  // cosnt feeValue = payoutAndFee.sub(event.params.amount);
 }
 
 export function handleDomainAdded(event: DomainAdded): void {
+  // Colony Wide
   let colonyMetrics = getColonyMetrics(event);
   colonyMetrics.domains = colonyMetrics.domains.plus(ONE_BI);
   colonyMetrics.save();
-  // Daily
+  // Daily Colony Wide
   let colonyMetricsDaily = getColonyMetricsDaily(event);
   colonyMetricsDaily.domains = colonyMetricsDaily.domains.plus(ONE_BI);
   colonyMetricsDaily.save();
 }
 
 export function handleHistoricDomainAdded(event: HistoricDomainAdded): void {
+  // Colony Wide
   let colonyMetrics = getColonyMetrics(event);
   colonyMetrics.domains = colonyMetrics.domains.plus(ONE_BI);
   colonyMetrics.save();
-  // Daily
+  // Daily Colony Wide
   let colonyMetricsDaily = getColonyMetricsDaily(event);
   colonyMetricsDaily.domains = colonyMetricsDaily.domains.plus(ONE_BI);
   colonyMetricsDaily.save();

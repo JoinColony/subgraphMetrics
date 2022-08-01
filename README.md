@@ -54,7 +54,7 @@ curl --location --request POST 'https://api.thegraph.com/index-node/graphql'  --
 
 ### YAML Parameters
 
-Source address: 0x78163f593D1Fa151B4B7cacD146586aD2b686294
+Source address: 0x78163f593D1Fa151B4B7cacD146586aD2b686294 (Note: Ensure this is in subgraph.yaml)
 Starting block: 11800000
 
 ### Example Query
