@@ -169,7 +169,7 @@ type Token @entity
   usdVolume: BigDecimal
 
   # total amount of tokens held by colonies
-  totalMinted: BigInt
+  totalMinted: BigInt!
   totalHeld: BigDecimal
   burned: BigDecimal
 
