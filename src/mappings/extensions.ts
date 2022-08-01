@@ -21,12 +21,12 @@ import { getVotingReputationExtension, getVotingReputationExtensionDaily } from 
 import { getWhitelistExtension, getWhitelistExtensionDaily } from './whitelist';
 
 export function getHandleExtensionInstalled(event: ExtensionInstalled): void {
-  let cn = IColonyNetwork.bind(event.address)
-  let extensionAddress = cn.getExtensionInstallation(event.params.extensionId, event.params.colony)
-  let ONE_TX_PAYMENT = crypto.keccak256(ByteArray.fromUTF8("OneTxPayment")).toHexString()
-  let COIN_MACHINE = crypto.keccak256(ByteArray.fromUTF8("CoinMachine")).toHexString()
-  let VOTING_REPUTATION = crypto.keccak256(ByteArray.fromUTF8("VotingReputation")).toHexString()
-  let WHITELIST = crypto.keccak256(ByteArray.fromUTF8("Whitelist")).toHexString()
+  let ColonyNetwork = IColonyNetwork.bind(event.address);
+  let extensionAddress = ColonyNetwork.getExtensionInstallation(event.params.extensionId, event.params.colony);
+  let ONE_TX_PAYMENT = crypto.keccak256(ByteArray.fromUTF8("OneTxPayment")).toHexString();
+  let COIN_MACHINE = crypto.keccak256(ByteArray.fromUTF8("CoinMachine")).toHexString();
+  let VOTING_REPUTATION = crypto.keccak256(ByteArray.fromUTF8("VotingReputation")).toHexString();
+  let WHITELIST = crypto.keccak256(ByteArray.fromUTF8("Whitelist")).toHexString();
 
   if (event.params.extensionId.toHexString() == ONE_TX_PAYMENT) {
     let oneTxPaymentExtension = getOneTxPaymentExtension(event);

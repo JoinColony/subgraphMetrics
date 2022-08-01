@@ -6,7 +6,6 @@ import {
 import { OneTxPaymentExtension, OneTxPaymentExtensionDaily } from '../../generated/schema';
 
 import { ZERO_BI, ONE_BI } from '../utils';
-import { ExtensionDeprecated, ExtensionInstalled, ExtensionUninstalled } from '../../generated/ColonyNetwork/IColonyNetwork';
 import { ethereum } from '@graphprotocol/graph-ts';
 
 export function handleExtensionInitialised(event: ExtensionInitialised): void {

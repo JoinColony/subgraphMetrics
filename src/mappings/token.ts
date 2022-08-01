@@ -1,16 +1,16 @@
 import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts';
 import { Token as TokenContract } from '../../generated/templates/Token/Token';
-import { Token as TokenSchema } from '../../generated/schema';
+import { Token, Token as TokenSchema } from '../../generated/schema';
 import { Token as TokenTemplate } from '../../generated/templates';
 import { ZERO_BI, ZERO_BD, ONE_BD, ONE_BI } from '../utils';
-import { getColonyMetrics } from './colonyNetwork';
+import { getColonyMetrics, getColonyMetricsDaily } from './colonyNetwork';
 
 // On xDai Chain both native and DAI (xDAI) is the same address, as it is the native token
 // So we can use it for USD value as well
 export const NATIVE_ADDRESS = "0x0000000000000000000000000000000000000000";
 export const DAI_ADDRESS = "0x0000000000000000000000000000000000000000";
 
-export function createToken(tokenAddress: string, event: ethereum.Event): void {
+export function getToken(tokenAddress: string, event: ethereum.Event): Token {
   let token = TokenSchema.load(tokenAddress);
   if (token == null) {
     token = new TokenSchema(tokenAddress);
@@ -51,15 +51,27 @@ export function createToken(tokenAddress: string, event: ethereum.Event): void {
     token.volume = ZERO_BD;
     token.nativeVolume = ZERO_BD;
     token.usdVolume = ZERO_BD;
+    token.totalMinted = ZERO_BI;
+    token.totalHeld = ZERO_BD;
+    token.burned = ZERO_BD;
+    token.totalTransactions = ZERO_BI;
+    token.totalTransactionsValue = ZERO_BD;
+    token.totalFeesCount = ZERO_BI;
+    token.totalFeesValueUSD = ZERO_BD;
     token.save();
-    
-    TokenTemplate.create(Address.fromString(tokenAddress));
 
-    // Add the total tokens
+    // Add the total tokens to Colony Wide
     let colonyMetrics = getColonyMetrics(event);
     colonyMetrics.totalTokens = colonyMetrics.totalTokens.plus(ONE_BI);
     colonyMetrics.save();
+    // Add the total tokens to Daily Colony Wide
+    let colonyMetricsDaily = getColonyMetricsDaily(event);
+    colonyMetricsDaily.totalTokens = colonyMetricsDaily.totalTokens.plus(ONE_BI);
+    colonyMetricsDaily.save();
+    
+    TokenTemplate.create(Address.fromString(tokenAddress));
   }
+  return <Token>token;
 }
 
 export function isNATIVE(token: TokenSchema): boolean {
