@@ -82,11 +82,7 @@ export function handleTokensMinted(event: TokensMinted): void {
   // Get the token being minted
   let token = getToken(event.params.who.toHexString(), event);
   if (token) {
-    if (token.totalMinted) {
-      token.totalMinted = token.totalMinted.plus(event.params.amount);
-    } else {
-      token.totalMinted = ZERO_BI;
-    }
+    token.totalMinted = token.totalMinted.plus(event.params.amount);
     token.save();
   }
 }

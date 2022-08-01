@@ -12,7 +12,7 @@ try {
     /*
      * Read the subgraph config yaml config
      */
-    const subgraphConfig = yaml.safeLoad(
+    const subgraphConfig = yaml.load(
       readFileSync(
         SUBGRAPH_CONFIG,
         'utf8',
